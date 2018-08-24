@@ -20,10 +20,20 @@ class BooksApp extends Component {
       })  
   }
 /**
-* @description Represents a book
-* @param {string} title - The title of the book
-* @param {string} author - The author of the book
-*/  
+* @description Changes Book location between shelves
+* @param {object} book - the book object
+* @param {string} shelf - can be one of the values: ('currentlyReading', 'wantToRead', 'wantToRead' and 'none')
+*/
+  handleBookShelfChange = (book, shelf) => {
+    
+    let updatedBooks = this.state.books.filter(b => b.id !== book.id)
+    let newBookStatus = updatedBooks.concat(book)
+    book.shelf = shelf
+    this.setState({books: newBookStatus})
+
+    BooksAPI.update(book, shelf)  
+
+  }
   
   render() {
     console.log(this.state.books)
@@ -32,11 +42,15 @@ class BooksApp extends Component {
         <Route exact path='/' render={() => (
             <BookList
               books={this.state.books}
+              handleBookShelfChange={this.handleBookShelfChange}
             />
           )}
         />
         <Route path='/search' render={() => (
-            <SearchBooks />
+            <SearchBooks
+              books={this.state.books}
+              handleBookShelfChange={this.handleBookShelfChange}
+            />
           )}
         />
       </div>
