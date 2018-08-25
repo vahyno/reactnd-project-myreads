@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 const Book = (props) => {
     const { book, handleBookShelfChange } = props
@@ -22,7 +22,9 @@ const Book = (props) => {
                 </div>
             </div>
             <div className="book-title">{book.title}</div>
-            <div className="book-authors">{book.authors.join(', ')}</div>
+            {book.authors && <div className="book-authors">
+                {book.authors.join(', ')}</div>
+            }
         </div>
     )
 }

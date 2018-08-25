@@ -1,8 +1,42 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
+import * as BooksAPI from '../BooksAPI';
+import Book from './Book';
+
 
 class SearchBooks extends Component {
+    state = {
+        query: '',
+        foundBooks: [],
+    }
+
+    updateQuery = (query) => {
+        this.setState(()=>({
+            query
+        }))
+        // console.log(this.state.query)
+    }
+
+    findingBooks = (query) => {
+        // console.log(query);
+        BooksAPI.search(query).then((foundBooks) => {
+
+            if (Array.isArray(foundBooks)) {
+                this.setState({foundBooks})
+            } else {
+                this.setState({foundBooks: []})
+            }
+        })    
+    }
+
+    handleChange = (event) => {
+        this.updateQuery(event.target.value);
+        this.findingBooks(event.target.value);
+    }
+
+
     render(){
+        const { handleBookShelfChange } = this.props;
         return (
             <div className="search-books">
                 <div className="search-books-bar">
@@ -16,12 +50,26 @@ class SearchBooks extends Component {
                         However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                         you don't find a specific author or title. Every search is limited by search terms.
                         */}
-                        <input type="text" placeholder="Search by title or author"/>
+                        <input 
+                            type="text" 
+                            placeholder="Search by title or author"
+                            value={this.state.query}
+                            onChange={this.handleChange}
+                        />
                 
                     </div>
                 </div>
                 <div className="search-books-results">
-                    <ol className="books-grid"></ol>
+                    <ol className="books-grid">
+                        {this.state.foundBooks.length && this.state.foundBooks.map(book => (
+                            <li key={book.id}>
+                                <Book 
+                                    book={book} 
+                                    handleBookShelfChange={handleBookShelfChange}
+                                />
+                            </li>
+                        ))}
+                    </ol>
                 </div>
           </div>        
         )
