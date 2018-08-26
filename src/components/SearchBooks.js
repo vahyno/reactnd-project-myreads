@@ -19,14 +19,16 @@ class SearchBooks extends Component {
 
     findingBooks = (query) => {
         // console.log(query);
-        BooksAPI.search(query).then((foundBooks) => {
+        if (query !== '') {
+            BooksAPI.search(query).then((foundBooks) => {
 
-            if (Array.isArray(foundBooks)) {
-                this.setState({foundBooks})
-            } else {
-                this.setState({foundBooks: []})
-            }
-        })    
+                if (Array.isArray(foundBooks)) {
+                    this.setState({foundBooks})
+                } else {
+                    this.setState({foundBooks: []})
+                }
+            })
+        }   
     }
 
     handleChange = (event) => {
