@@ -26,17 +26,24 @@ class BooksApp extends Component {
 */
   handleBookShelfChange = (book, shelf) => {
     
-    let updatedBooks = this.state.books.filter(b => b.id !== book.id)
-    let newBookStatus = updatedBooks.concat(book)
-    book.shelf = shelf
-    this.setState({books: newBookStatus})
-
+    if ( 'none' === book.shelf) {
+      book.shelf = shelf;
+      this.setState(prevState => {
+        prevState.books.push([book]);
+        return prevState;
+      });
+    } else {
+      let updatedBooks = this.state.books.filter(b => b.id !== book.id);
+      let newBookStatus = updatedBooks.concat(book);
+      book.shelf = shelf;
+      this.setState({books: newBookStatus});
+    }
     BooksAPI.update(book, shelf)  
 
   }
   
   render() {
-    console.log(this.state.books)
+    // console.log(this.state.books)
     return (
       <div className="app">
         <Route exact path='/' render={() => (

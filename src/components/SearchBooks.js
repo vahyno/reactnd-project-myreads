@@ -18,14 +18,24 @@ class SearchBooks extends Component {
     }
 
     findingBooks = (query) => {
+        const { books } = this.props;
         // console.log(query);
         if (query !== '') {
-            BooksAPI.search(query).then((foundBooks) => {
-
-                if (Array.isArray(foundBooks)) {
-                    this.setState({foundBooks})
-                } else {
+            BooksAPI.search(query, 20).then((foundBooks) => {
+                if (!Array.isArray(foundBooks)) {
                     this.setState({foundBooks: []})
+                } else {
+                    this.setState(()=>({
+                        foundBooks : foundBooks.map(foundBook => {
+                            for (let i=0; i<books.length; i++){
+                                if (foundBook.id === books[i].id) {
+                                    return books[i];
+                                }
+                            }
+                            foundBook.shelf = 'none';
+                            return foundBook;
+                        })
+                    }))
                 }
             })
         }   
