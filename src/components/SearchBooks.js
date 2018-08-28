@@ -38,7 +38,11 @@ class SearchBooks extends Component {
                     }))
                 }
             })
-        }   
+        }  else {
+            this.setState(() => ({
+                foundBooks: []
+            }))
+        }
     }
 
     handleChange = (event) => {
@@ -65,7 +69,7 @@ class SearchBooks extends Component {
                         <input 
                             type="text" 
                             placeholder="Search by title or author"
-                            value={this.state.query}
+                            value={this.query}
                             onChange={this.handleChange}
                         />
                 

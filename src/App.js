@@ -29,7 +29,7 @@ class BooksApp extends Component {
     if ( 'none' === book.shelf) {
       book.shelf = shelf;
       this.setState(prevState => {
-        prevState.books.push([book]);
+        prevState.books.push(book);
         return prevState;
       });
     } else {
@@ -39,7 +39,6 @@ class BooksApp extends Component {
       this.setState({books: newBookStatus});
     }
     BooksAPI.update(book, shelf)  
-
   }
   
   render() {
